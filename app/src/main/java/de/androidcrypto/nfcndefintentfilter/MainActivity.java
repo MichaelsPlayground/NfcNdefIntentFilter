@@ -9,6 +9,7 @@ import android.nfc.NfcAdapter;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.provider.Settings;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -60,6 +61,9 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this,"NO NFC Capabilities",
                     Toast.LENGTH_SHORT).show();
             finish();
+        } else {
+            if (!nfcAdapter.isEnabled())
+                showWirelessSettings();
         }
         //Create a PendingIntent object so the Android system can
         //populate it with the details of the tag when it is scanned.
@@ -77,6 +81,12 @@ public class MainActivity extends AppCompatActivity {
                             Intent.FLAG_ACTIVITY_SINGLE_TOP),
                     PendingIntent.FLAG_UPDATE_CURRENT);
         }
+    }
+
+    private void showWirelessSettings() {
+        Toast.makeText(this, "You need to enable NFC", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(Settings.ACTION_WIRELESS_SETTINGS);
+        startActivity(intent);
     }
 
     @Override
